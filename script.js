@@ -10,7 +10,7 @@ const institutionInput = document.getElementById("institutionName");
 const addressInput = document.getElementById("address");
 
 // [LINK-১] Google Apps Script Web App URL — একই URL Google Apps Script deploy থেকে নিতে হবে।
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfLbWDj3_4oK-UFSspcMZYR2qJHejF6NOE23TCoZ11VERnSSGiEEckNDUvv0IEXNQB/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxrFb4D3HoD0F1UTutFR7W-wl4p1SeMyOYQeNbVxCEBzKKNeMipdLMeTCn8SMR7JnYT/exec";
 
 const statusMessage = document.getElementById("statusMessage");
 const emptyState = document.getElementById("emptyState");
