@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08766f">
+  <title>গওহরডাঙ্গা মাদরাসার মাহফিল 2026 | প্রোফাইল পিক তৈরি করুন </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-mark" aria-hidden="true"><img src="./assets/মাদরাসার লোগু নিউ-01.png" alt=""></div>
+      <div>
+        <h1>গওহরডাঙ্গা মাদরাসার ৯১ তম বার্ষিক ওয়াজ মাহফিলের পোস্টার দিয়ে প্রোফাইল পিক তৈরি করুন</h1>
+        <p>আপনার ছবি দিয়ে ফ্রেমসহ প্রোফাইল পিক বানান</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- একটিমাত্র form পুরো layout-কে ঘিরেছে; এতে HTML-এর form nesting সমস্যা হয় না। -->
+    <form id="profileForm">
+      <section class="form-card" aria-labelledby="form-title">
+        <span class="eyebrow">সহজে তৈরি করুন</span>
+        <h2 id="form-title">আপনার তথ্য দিন</h2>
+        <p class="muted">নিচের তথ্য পূরণ করে ছবি আপলোড করুন। ডাউনলোডের আগে তৈরি ছবিটি দেখে নিতে পারবেন।</p>
+
+        <label for="personName">আপনার নাম</label>
+        <input id="personName" name="personName" type="text" placeholder="আপনার পুরো নাম লিখুন" maxlength="80" required>
+
+        <label for="institutionName">আপনার মাদ্রাসা / প্রতিষ্ঠানের নাম</label>
+        <input id="institutionName" name="institutionName" type="text" placeholder="প্রতিষ্ঠানের নাম লিখুন" maxlength="120" required>
+
+        <label for="address">আপনার ঠিকানা</label>
+        <input id="address" name="address" type="text" placeholder="গ্রাম, উপজেলা, জেলা" maxlength="180" required>
+
+        <div class="form-group">
+          <label for="photoInput">আপনার ছবি আপলোড করুন</label>
+          <div class="custom-file-upload">
+            <input id="photoInput" name="photo" type="file" accept="image/png,image/jpeg,image/webp" required>
+            <label for="photoInput" class="upload-button">📷 ছবি নির্বাচন করুন</label>
+            <span id="fileName" aria-live="polite">এখনো কোনো ছবি নির্বাচন করেননি</span>
+          </div>
+          <small class="hint">JPG, PNG অথবা WebP ছবি নির্বাচন করুন।</small>
+        </div>
+      </section>
+
+      <section class="preview-card" aria-labelledby="preview-title">
+        <div class="preview-heading">
+          <div>
+            <span class="eyebrow">লাইভ প্রিভিউ</span>
+            <h2 id="preview-title">আপনার প্রোফাইল পিক</h2>
+          </div>
+          <span class="preview-badge">Preview</span>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="profileCanvas" width="1200" height="1200" aria-label="তৈরি হওয়া প্রোফাইল পিকের প্রিভিউ"></canvas>
+          <div id="emptyState" class="empty-state">
+            <div class="upload-icon" aria-hidden="true">🎆</div>
+            <strong>আপনার ছবি এখানে দেখা যাবে</strong>
+            <span>তথ্য পূরণ করে ছবি আপলোড করুন</span>
+          </div>
+        </div>
+
+        <div class="adjust-box">
+          <div class="adjust-title"><strong>ছবির অবস্থান ঠিক করুন</strong><span>প্রয়োজন হলে</span></div>
+          <label for="zoomRange">ছবির জুম</label>
+          <input id="zoomRange" type="range" min="0.7" max="2.5" value="1" step="0.01" disabled>
+          <div class="range-ends"><span>ছোট</span><span>বড়</span></div>
+          <div class="move-buttons">
+            <button type="button" id="moveUp" disabled aria-label="উপরে সরান">↑</button>
+            <button type="button" id="moveLeft" disabled aria-label="বামে সরান">←</button>
+            <button type="button" id="moveDown" disabled aria-label="নিচে সরান">↓</button>
+            <button type="button" id="moveRight" disabled aria-label="ডানে সরান">→</button>
+            <button type="button" id="autoFit" disabled>অটো ঠিক করুন</button>
+          </div>
+          <small class="hint">প্রিভিউ ছবির ওপর মাউস/আঙুল দিয়ে টেনে অবস্থান বদলাতে পারবেন।</small>
+        </div>
+
+        <button class="button button-primary" type="submit">প্রোফাইল পিক তৈরি করুন</button>
+        <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+        <div class="privacy-note">আপনার ছবি এই পেজেই তৈরি হয়। নাম, মাদ্রাসার নাম, ঠিকানা ও জমা দেওয়ার সময় Google Sheet-এ পাঠানো হবে। ডাউনলোডের সুবিধার জন্য তৈরি PNG-এর একটি অস্থায়ী কপি Google Drive-এ লিংক-সহ দেখা যাবে এবং পরিষ্কারের ট্রিগার চালু থাকলে প্রায় এক ঘণ্টা পর ট্র্যাশে যাবে।</div>
+        <div class="preview-actions">
+          <button id="downloadButton" class="button button-download" type="button" disabled>⬇ ছবি ডাউনলোড করুন</button>
+          <button id="resetButton" class="button button-secondary" type="button">আবার শুরু করুন</button>
+        </div>
+        <p class="muted preview-help">ছবিটি তৈরি হলে প্রিভিউতে দেখে নিন, তারপর PNG ফাইল ডাউনলোড করুন।</p>
+        <p style="color:red;font-weight:bold">ডাউনলোড না হলে Google Drive-এর লিংক খুলুন, অথবা লিংকটি Chrome-এ কপি করে খুলুন।</p>
+      </section>
+    </form>
+  </main>
+
+  <div class="ma-prochar">
+    <h1>📢 মাহফিলের সকল গুরুত্বপূর্ণ তথ্য, সময়সূচি, নতুন আপডেট এবং সরাসরি লাইভ সম্প্রচার পেতে নিচের বাটনে ক্লিক করে আমাদের ফলো করুন।</h1>
+    <section class="followButton">
+      <!-- [LINK-৩] Facebook Follow URL পরিবর্তন করতে চাইলে এখানে বদলান। -->
+      <a href="https://www.facebook.com/share/1A2LrEtpX6/"><button class="fb-b1" type="button">Follow</button></a>
+      <!-- [LINK-৪] YouTube channel URL পরিবর্তন করতে চাইলে এখানে বদলান। -->
+      <a href="https://youtube.com/@gawharmediaofficial?si=C8CGwPa1Oh84qgrJ"><button class="fb-b2" type="button">Subscribe</button></a>
+    </section>
+  </div>
+
+  <div class="poster-image"><img src="./assets/মাহফিল পোস্টার-20.png" alt="মাহফিলের পোস্টার"></div>
+  <footer>
+    <p>গওহরডাঙ্গা মাদরাসা · মাহফিল প্রোফাইল পিক জেনারেটর</p>
+    <p>Monir Hawladar</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
