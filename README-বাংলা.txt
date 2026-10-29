@@ -1,16 +1,11 @@
-গওহর মাদ্রাসা প্রোফাইল সাইট — Facebook ডাউনলোড ফিক্স
+গওহর মাদ্রাসা প্রোফাইল পিক জেনারেটর — সংশোধিত script.js
 
-এই ZIP-এ আছে:
-- script.js: আপডেট করা JavaScript ফাইল
+ব্যবহার:
+1. ZIP ফাইল Extract করুন।
+2. আপনার ওয়েবসাইটের পুরোনো script.js ফাইলের একটি ব্যাকআপ রাখুন।
+3. এই ZIP-এর script.js দিয়ে পুরোনো script.js প্রতিস্থাপন করুন।
+4. GOOGLE_SCRIPT_URL আপনার নিজের Apps Script Web App URL-এর সঙ্গে মিলিয়ে নিন।
+5. index.html এবং assets/profile-frame.png আগের মতো একই প্রজেক্টে রাখুন।
+6. GitHub-এ script.js আপডেট করে Commit/Push করুন।
 
-কী পরিবর্তন হয়েছে:
-- Facebook/Instagram-এর in-app browser শনাক্ত হলে আর শুধু স্বয়ংক্রিয় download-এর উপর নির্ভর করে না।
-- ডাউনলোড বাটনে চাপলে সঙ্গে সঙ্গে “ছবি খুলুন / সেভ করুন” লিংক দেখায়।
-- Google Drive-এ অস্থায়ী আপলোড সফল হলে আলাদা Drive লিংকও দেখানোর চেষ্টা করে।
-- Chrome/সাধারণ ব্রাউজারে আগের মতো ডাউনলোডের চেষ্টা করে।
-
-গুরুত্বপূর্ণ:
-- এই ZIP-এ HTML, CSS, assets/profile-frame.png বা Google Apps Script (Code.gs) নেই; আপনার দেওয়া script.js থেকে শুধু JavaScript আপডেট করা হয়েছে।
-- GitHub রিপোজিটরির আগের script.js-এর বদলে এই ফাইলটি দিন।
-- Google Apps Script URL একই রাখা হয়েছে। Drive লিংক না এলে Apps Script Web App deployment, permissions এবং uploadImage handler পরীক্ষা করতে হবে।
-- Facebook-এর ব্রাউজারের সীমাবদ্ধতার কারণে সব ফোনে সরাসরি ডাউনলোড নিশ্চিত করা যায় না; “ছবি খুলুন / সেভ করুন” লিংকটি বিকল্প পথ।
+নোট: JavaScript syntax check করা হয়েছে। Google Apps Script-এর upload endpoint, permissions এবং deployment আলাদাভাবে ঠিক থাকতে হবে; শুধু script.js বদলালেই সার্ভার-সাইড সমস্যা সমাধান নিশ্চিত নয়।
