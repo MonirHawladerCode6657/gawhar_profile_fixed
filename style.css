@@ -470,3 +470,54 @@ footer {
     padding: 10px 16px;
   }
 }
+
+
+/* Google Drive থেকে ফেরত আসা ছবির প্রিভিউ ও fallback controls */
+.drive-result {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #f8fcfa;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.drive-result[hidden] {
+  display: none !important;
+}
+.drive-result h3 {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-size: 18px;
+}
+.drive-result-preview {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  max-height: 70vh;
+  object-fit: contain;
+  margin: 14px auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.drive-result-download {
+  display: block;
+  margin: 12px 0;
+  text-decoration: none;
+  text-align: center;
+}
+.drive-result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.drive-result-actions .button {
+  width: 100%;
+}
+@media (max-width: 420px) {
+  .drive-result-actions {
+    grid-template-columns: 1fr;
+  }
+}

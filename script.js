@@ -46,7 +46,7 @@ const addressInput = document.getElementById("address");
 
 
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxr5foxsmodeDX9quBhWsDA1hmZ_3I-LeYGUoI2JkzJgq3hm2fMl0g1PJrlJZF0ykDX/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTKfszuGHThdrw1nJlgP23Q_lrzBltss7VS0ULpxiU1xBCJLtHqPY7bYUSi-7HZOkh/exec";
 
 
 
@@ -970,6 +970,20 @@ form.addEventListener("submit", async event => {
 
 
 
+async function submitToGoogleSheet(formData) {
+  return new Promise((resolve, reject) => {
+    const iframe=document.createElement("iframe");
+    iframe.name="sheetSubmitFrame"; iframe.hidden=true;
+    const form=document.createElement("form");
+    form.method="POST"; form.action=GOOGLE_SCRIPT_URL; form.target=iframe.name; form.hidden=true;
+    formData.forEach((v,k)=>{ const i=document.createElement("input"); i.type="hidden"; i.name=k; i.value=v; form.appendChild(i);});
+    document.body.append(iframe,form);
+    const t=setTimeout(()=>{ iframe.remove(); form.remove(); reject(new Error("timeout"));},15000);
+    iframe.onload=()=>{ clearTimeout(t); iframe.remove(); form.remove(); resolve();};
+    form.submit();
+  });
+}
+
 downloadButton.addEventListener("click", async () => {
 
 
@@ -1214,7 +1228,7 @@ function showDownloadFallback(blob, fileName) {
 
 
 
-    downloadButton.insertAdjacentElement("afterend", box);
+    document.querySelector(".preview-actions").insertAdjacentElement("afterend", box);
 
 
 
@@ -1362,111 +1376,63 @@ window.addEventListener("message", event => {
 
 
 
-  let box = document.getElementById("driveDownloadFallback");
+  const panel = document.getElementById("driveResultPanel");
+  const preview = document.getElementById("driveResultPreview");
+  const previewStatus = document.getElementById("drivePreviewStatus");
+  const downloadLink = document.getElementById("driveResultDownload");
+  const urlField = document.getElementById("driveResultUrl");
+  const copyButton = document.getElementById("copyDriveLinkButton");
+  const openButton = document.getElementById("openDriveLinkButton");
 
-
-
-  if (!box) {
-
-
-
-    box = document.createElement("div");
-
-
-
-    box.id = "driveDownloadFallback";
-
-
-
-    box.style.cssText = "margin:16px 0;padding:16px;border:1px solid #ddd;border-radius:12px;text-align:center;";
-
-
-
-    downloadButton.insertAdjacentElement("afterend", box);
-
-
-
+  // Apps Script সাধারণত previewUrl পাঠায়; পুরোনো deployment হলে download URL থেকে ID বের করি।
+  let previewUrl = data.previewUrl || "";
+  if (!previewUrl) {
+    try {
+      const returnedUrl = new URL(data.downloadUrl);
+      const fileId = returnedUrl.searchParams.get("id");
+      if (fileId) previewUrl = `https://drive.google.com/uc?export=view&id=${encodeURIComponent(fileId)}`;
+    } catch (err) {
+      previewUrl = data.downloadUrl;
+    }
   }
 
+  panel.hidden = false;
+  previewStatus.textContent = "Google Drive-এ আপলোড হওয়া ছবির প্রিভিউ লোড হচ্ছে…";
+  preview.onload = () => { previewStatus.textContent = "প্রিভিউ তৈরি। ছবিটি দেখে ডাউনলোড বা লিংক কপি করুন।"; };
+  preview.onerror = () => {
+    previewStatus.textContent = "এই ব্রাউজারে প্রিভিউ দেখা যাচ্ছে না। নিচের ডাউনলোড বা লিংক কপি অপশন ব্যবহার করুন।";
+    preview.hidden = true;
+  };
+  preview.hidden = false;
+  preview.src = previewUrl;
+  preview.alt = "Google Drive-এ আপলোড হওয়া প্রোফাইল ছবির প্রিভিউ";
 
+  downloadLink.href = data.downloadUrl;
+  downloadLink.download = "gawhar-madrasa-profile.png";
+  urlField.value = data.downloadUrl;
 
-  box.replaceChildren();
-
-
-
-
-
-
-
-  const message = document.createElement("p");
-
-
-
-  message.textContent = "Facebook-এ ডাউনলোড কাজ না করলে এই Google Drive লিংকটি খুলুন। (ফাইলটি প্রায় এক ঘণ্টা অস্থায়ীভাবে রাখা হবে।)";
-
-
-
-  const link = document.createElement("a");
-
-
-
-  link.href = data.downloadUrl;
-
-
-
-  link.target = "_blank";
-
-
-
-  link.rel = "noopener noreferrer";
-
-
-
-  link.textContent = "Google Drive থেকে ছবি খুলুন / ডাউনলোড করুন";
-
-
-
-  link.style.cssText = "display:inline-block;padding:12px 18px;background:#1877f2;color:white;border-radius:8px;text-decoration:none;";
-
-
-
-  const urlField = document.createElement("input");
-
-  urlField.type = "text"; urlField.readOnly = true; urlField.value = data.downloadUrl;
-
-  urlField.setAttribute("aria-label", "Google Drive ছবির লিংক");
-
-  urlField.style.cssText = "display:block;box-sizing:border-box;width:100%;margin:12px 0;padding:10px;border:1px solid #bbb;border-radius:8px;font-size:13px;";
-
-  const copyButton = document.createElement("button");
-
-  copyButton.type = "button"; copyButton.textContent = "লিংক কপি করুন";
-
-  copyButton.style.cssText = "display:inline-block;margin:4px;padding:12px 18px;background:#08766f;color:white;border:0;border-radius:8px;";
-
-  copyButton.addEventListener("click", async () => {
-
-    urlField.focus(); urlField.select(); urlField.setSelectionRange(0, urlField.value.length);
-
+  copyButton.onclick = async () => {
+    urlField.focus();
+    urlField.select();
+    urlField.setSelectionRange(0, urlField.value.length);
     try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(data.downloadUrl);
+        copyButton.textContent = "লিংক কপি হয়েছে ✓";
+      } else {
+        const copied = document.execCommand("copy");
+        copyButton.textContent = copied ? "লিংক কপি হয়েছে ✓" : "লিংক সিলেক্ট করে কপি করুন";
+      }
+    } catch (err) {
+      copyButton.textContent = "লিংক সিলেক্ট করে কপি করুন";
+    }
+  };
 
-      if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(data.downloadUrl); copyButton.textContent = "লিংক কপি হয়েছে ✓"; }
+  openButton.onclick = () => {
+    window.open(data.downloadUrl, "_blank", "noopener,noreferrer");
+  };
 
-      else { const ok = document.execCommand("copy"); copyButton.textContent = ok ? "লিংক কপি হয়েছে ✓" : "লিংকটি সিলেক্ট করে কপি করুন"; }
-
-    } catch (err) { copyButton.textContent = "লিংকটি সিলেক্ট করে কপি করুন"; }
-
-  });
-
-  const openButton = document.createElement("button");
-
-  openButton.type = "button"; openButton.textContent = "লিংক খুলুন";
-
-  openButton.style.cssText = "display:inline-block;margin:4px;padding:12px 18px;background:#1877f2;color:white;border:0;border-radius:8px;";
-
-  openButton.addEventListener("click", () => { window.location.href = data.downloadUrl; });
-
-  box.append(message, link, urlField, copyButton, openButton);
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
 
 

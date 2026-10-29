@@ -35,7 +35,12 @@ function uploadTemporaryImage_(p) {
     const folders = DriveApp.getFoldersByName(TEMP_FOLDER_NAME); const folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(TEMP_FOLDER_NAME);
     const file = folder.createFile(blob); file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     PropertiesService.getScriptProperties().setProperty(TEMP_PREFIX + file.getId(), String(Date.now() + IMAGE_LIFETIME));
-    return imageResult_({ ok: true, nonce, downloadUrl: 'https://drive.google.com/uc?export=download&id=' + file.getId() });
+    return imageResult_({
+      ok: true,
+      nonce,
+      downloadUrl: 'https://drive.google.com/uc?export=download&id=' + file.getId(),
+      previewUrl: 'https://drive.google.com/uc?export=view&id=' + file.getId()
+    });
   } catch (err) { console.error(err); return imageResult_({ ok: false, nonce }); }
 }
 function imageResult_(result) {

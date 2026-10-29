@@ -86,6 +86,19 @@
           <button id="downloadButton" class="button button-download" type="button" disabled>⬇ ছবি ডাউনলোড করুন</button>
           <button id="resetButton" class="button button-secondary" type="button">আবার শুরু করুন</button>
         </div>
+        <section id="driveResultPanel" class="drive-result" hidden aria-live="polite">
+          <h3>Google Drive থেকে তৈরি ছবিটি</h3>
+          <p class="muted">এখানে ছবির প্রিভিউ দেখুন। ডাউনলোড না হলে লিংক কপি করে Chrome-এ খুলুন।</p>
+          <img id="driveResultPreview" class="drive-result-preview" alt="Google Drive-এ আপলোড হওয়া প্রোফাইল ছবির প্রিভিউ">
+          <p id="drivePreviewStatus" class="hint"></p>
+          <a id="driveResultDownload" class="button button-download drive-result-download" target="_blank" rel="noopener noreferrer">Google Drive থেকে ছবি ডাউনলোড করুন</a>
+          <label for="driveResultUrl">Google Drive ছবির লিংক</label>
+          <input id="driveResultUrl" type="text" readonly>
+          <div class="drive-result-actions">
+            <button id="copyDriveLinkButton" class="button button-primary" type="button">লিংক কপি করুন</button>
+            <button id="openDriveLinkButton" class="button button-secondary" type="button">লিংক খুলুন</button>
+          </div>
+        </section>
         <p class="muted preview-help">ছবিটি তৈরি হলে প্রিভিউতে দেখে নিন, তারপর PNG ফাইল ডাউনলোড করুন।</p>
         <p style="color:red;font-weight:bold">ডাউনলোড না হলে Google Drive-এর লিংক খুলুন, অথবা লিংকটি Chrome-এ কপি করে খুলুন।</p>
       </section>
